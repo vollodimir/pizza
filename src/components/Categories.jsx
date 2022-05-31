@@ -12,13 +12,15 @@ function Categories() {
   return (
     <div className="categories">
       <ul>
-        {categories.map((el, index) => (
-          <li
-            onClick={(index) => onClickCategories(index)}
-            className={activeIndex === index ? 'active' : ''}>
-            {el}
-          </li>
-        ))}
+        {categories &&
+          categories.map((el, index) => (
+            <li
+              key={el + index}
+              onClick={() => onClickCategories(index)}
+              className={activeIndex === index ? 'active' : ''}>
+              {el}
+            </li>
+          ))}
       </ul>
     </div>
   );
