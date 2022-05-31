@@ -5,7 +5,7 @@ import './scss/app.scss';
 import Header from './components/Header';
 import Categories from './components/Categories';
 import Sort from './components/Sort';
-import PizzaBfock from './components/PizzaBfock';
+import PizzaBlock from './components/PizzaBlock';
 
 function App() {
   return (
@@ -19,13 +19,13 @@ function App() {
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
-            <PizzaBfock />
-            <PizzaBfock />
-            <PizzaBfock />
-            <PizzaBfock />
-            <PizzaBfock />
-            <PizzaBfock />
-            <PizzaBfock />
+            <PizzaBlock />
+            <PizzaBlock />
+            <PizzaBlock />
+            <PizzaBlock />
+            <PizzaBlock />
+            <PizzaBlock />
+            <PizzaBlock />
           </div>
         </div>
       </div>

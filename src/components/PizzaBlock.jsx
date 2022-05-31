@@ -1,6 +1,6 @@
 import React from 'react';
 
-function PizzaBfock() {
+function PizzaBlock() {
   return (
     <div className="pizza-block">
       <img
@@ -42,4 +42,4 @@ function PizzaBfock() {
   );
 }
 
-export default PizzaBfock;
+export default PizzaBlock;
