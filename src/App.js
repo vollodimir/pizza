@@ -9,7 +9,7 @@ import PizzaBlock from './components/PizzaBlock';
 
 import pizzas from './assets/pizzasMass.json';
 
-console.log(pizzas);
+//console.log(pizzas);
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
             {pizzas.map((elem) => (
-              <PizzaBlock props={elem} />
+              <PizzaBlock key={elem.id + elem.name} {...elem} />
             ))}
           </div>
         </div>
