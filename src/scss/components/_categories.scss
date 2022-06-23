@@ -3,7 +3,9 @@
 .categories {
   ul {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; //tut
+    // overflow: scroll;
+    // width: 70%;
 
     li {
       background-color: #f9f9f9;
