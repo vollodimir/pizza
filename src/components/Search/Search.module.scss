@@ -1,0 +1,14 @@
+.all {
+  input {
+    color: green;
+    &:focus {
+      color: red;
+    }
+  }
+  span {
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+}
