@@ -1,7 +1,9 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { SearchContext } from '../App';
 
+import { setCategoryId } from '../redux/slices/filterSlice';
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
@@ -20,7 +22,12 @@ function Home() {
   //   .filter((el) => (el.name.toLowerCase().includes(searchValue.toLowerCase()) ? true : false))
   //   .map((elem) => <PizzaBlock key={elem.id + elem.name} {...elem} />);
 
-  const [activeCategorie, setActiveCategorie] = React.useState(0);
+  const activeCategorie = useSelector((state) => state.filterSlice.categoryId);
+  const dispatch = useDispatch();
+  const onCangeCategorie = (id) => dispatch(setCategoryId(id));
+
+  //const [activeCategorie, setActiveCategorie] = React.useState(0);
+
   const [sortList, setSortList] = React.useState({ name: 'популярности', sortValue: 'rating' });
   const [curentPage, setCurentPage] = React.useState(1);
 
@@ -47,10 +54,7 @@ function Home() {
   return (
     <>
       <div className="content__top">
-        <Categories
-          activeCategorie={activeCategorie}
-          setActiveCategorie={(i) => setActiveCategorie(i)}
-        />
+        <Categories activeCategorie={activeCategorie} onCangeCategorie={onCangeCategorie} />
         <Sort sortList={sortList} setSortList={(obj) => setSortList(obj)} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
