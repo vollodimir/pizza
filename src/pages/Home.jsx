@@ -23,12 +23,16 @@ function Home() {
   //   .map((elem) => <PizzaBlock key={elem.id + elem.name} {...elem} />);
 
   const activeCategorie = useSelector((state) => state.filterSlice.categoryId);
+  const sortList = useSelector((state) => state.filterSlice.sort);
+  //const { activeCategorie, sortList } = useSelector((state) => state.filterSlice); //короткий запис деструкт., але в мене назви змінних різні
+
   const dispatch = useDispatch();
   const onCangeCategorie = (id) => dispatch(setCategoryId(id));
 
   //const [activeCategorie, setActiveCategorie] = React.useState(0);
 
-  const [sortList, setSortList] = React.useState({ name: 'популярности', sortValue: 'rating' });
+  // const [sortList, setSortList] = React.useState({ name: 'популярности', sortValue: 'rating' });
+
   const [curentPage, setCurentPage] = React.useState(1);
 
   React.useEffect(() => {
@@ -55,7 +59,7 @@ function Home() {
     <>
       <div className="content__top">
         <Categories activeCategorie={activeCategorie} onCangeCategorie={onCangeCategorie} />
-        <Sort sortList={sortList} setSortList={(obj) => setSortList(obj)} />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? sceletons : pizzas}</div>
