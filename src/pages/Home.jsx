@@ -16,6 +16,9 @@ function Home() {
   const { searchValue } = React.useContext(SearchContext);
   const navigation = useNavigate();
 
+  const isRequest = React.useRef(false);
+  const isMounted = React.useRef(false); //без змін у редаксі щоб не добавлялась ссилка у браузері
+
   const [ithems, setIthems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const sceletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
@@ -34,21 +37,7 @@ function Home() {
   const curentPage = useSelector((state) => state.filterSlice.curentPage);
   const onChangePage = (page) => dispatch(setCurentPage(page));
 
-  React.useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      const sort = list.find((obj) => obj.sortValue === params.sortList);
-      console.log('params', params);
-      dispatch(
-        setFilter({
-          ...params,
-          sort,
-        }),
-      );
-    }
-  }, []);
-
-  React.useEffect(() => {
+  const fetchRequest = () => {
     const category = activeCategorie > 0 ? `category=${activeCategorie}` : '';
     const sortBy = sortList.sortValue;
     const searchBy = searchValue && `&search=${searchValue}`;
@@ -63,7 +52,6 @@ function Home() {
     //     setIthems(json);
     //     setIsLoading(false);
     //   });
-    console.log('fetch', activeCategorie);
     axios
       .get(
         `https://62a070c8a9866630f80f15dd.mockapi.io/ithems?&limit=4&page=${curentPage}&${category}&sortBy=${sortBy}${searchBy}`,
@@ -72,17 +60,42 @@ function Home() {
         setIthems(reaponse.data);
         setIsLoading(false);
       });
-    window.scrollTo(0, 0);
-  }, [activeCategorie, sortList, searchValue, curentPage]);
+  };
 
   React.useEffect(() => {
-    const curentUrl = qs.stringify({
-      activeCategorie,
-      sortList: sortList.sortValue,
-      curentPage,
-    });
-    navigation(`?${curentUrl}`);
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+      const sort = list.find((obj) => obj.sortValue === params.sortList);
+
+      dispatch(
+        setFilter({
+          ...params,
+          sort,
+        }),
+      );
+      isRequest.current = true;
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (isMounted.current) {
+      const curentUrl = qs.stringify({
+        activeCategorie,
+        sortList: sortList.sortValue,
+        curentPage,
+      });
+      navigation(`?${curentUrl}`);
+    }
+    isMounted.current = true;
   }, [activeCategorie, sortList, curentPage]);
+
+  React.useEffect(() => {
+    if (!isRequest.current) {
+      fetchRequest();
+    }
+    isRequest.current = false;
+    window.scrollTo(0, 0);
+  }, [activeCategorie, sortList, searchValue, curentPage]);
 
   return (
     <>
