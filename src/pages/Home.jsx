@@ -38,6 +38,7 @@ function Home() {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
       const sort = list.find((obj) => obj.sortValue === params.sortList);
+      console.log('params', params);
       dispatch(
         setFilter({
           ...params,
@@ -62,6 +63,7 @@ function Home() {
     //     setIthems(json);
     //     setIsLoading(false);
     //   });
+    console.log('fetch', activeCategorie);
     axios
       .get(
         `https://62a070c8a9866630f80f15dd.mockapi.io/ithems?&limit=4&page=${curentPage}&${category}&sortBy=${sortBy}${searchBy}`,
