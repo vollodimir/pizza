@@ -15,13 +15,28 @@ function Sort() {
 
   const [open, setOpen] = React.useState(false);
 
+  const sortOutside = React.useRef();
+
   const onClickSort = (obj) => {
     dispatch(setSortList(obj));
     setOpen(false);
   };
 
+  React.useEffect(() => {
+    const closeSort = (event) => {
+      if (!event.path.includes(sortOutside.current)) {
+        setOpen(false);
+      }
+    };
+
+    document.body.addEventListener('click', closeSort);
+
+    //component unmount то шо вище component didmount
+    return () => document.body.removeEventListener('click', closeSort);
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortOutside} className="sort">
       <div className="sort__label">
         <svg
           width="10"
