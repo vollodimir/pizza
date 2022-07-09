@@ -1,11 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import qs from 'qs';
 
 import { SearchContext } from '../App';
 import { setCategoryId, setCurentPage, setFilter } from '../redux/slices/filterSlice';
+import { fetchPizzas } from '../redux/slices/pizzaSlice';
+
 import Categories from '../components/Categories';
 import Sort, { list } from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
@@ -19,14 +20,10 @@ function Home() {
   const isRequest = React.useRef(false);
   const isMounted = React.useRef(false); //без змін у редаксі щоб не добавлялась ссилка у браузері
 
-  const [ithems, setIthems] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const { ithems, status } = useSelector((state) => state.pizzaSlice);
+
   const sceletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
   const pizzas = ithems.map((elem) => <PizzaBlock key={elem.id + elem.name} {...elem} />);
-
-  // const pizzas = ithems //статичний пошук
-  //   .filter((el) => (el.name.toLowerCase().includes(searchValue.toLowerCase()) ? true : false))
-  //   .map((elem) => <PizzaBlock key={elem.id + elem.name} {...elem} />);
 
   const activeCategorie = useSelector((state) => state.filterSlice.categoryId);
   const sortList = useSelector((state) => state.filterSlice.sort);
@@ -41,43 +38,9 @@ function Home() {
     const category = activeCategorie > 0 ? `category=${activeCategorie}` : '';
     const sortBy = sortList.sortValue;
     const searchBy = searchValue && `&search=${searchValue}`;
-    setIsLoading(true);
-    // fetch(
-    //   `https://62a070c8a9866630f80f15dd.mockapi.io/ithems?&limit=4&page=${curentPage}&${category}&sortBy=${sortBy}${searchBy}`,
-    // )
-    //   .then((res) => {
-    //     return res.json();
-    //   })
-    //   .then((json) => {
-    //     setIthems(json);
-    //     setIsLoading(false);
-    //   });
 
-    // axios
-    //   .get(
-    //     `https://62a070c8a9866630f80f15dd.mockapi.io/ithems?&limit=4&page=${curentPage}&${category}&sortBy=${sortBy}${searchBy}`,
-    //   )
-    //   .then((reaponse) => {
-    //     setIthems(reaponse.data);
-    //     setIsLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setIsLoading(false);
-    //   });
-
-    //синхронний запрос
-    try {
-      const responce = await axios.get(
-        `https://62a070c8a9866630f80f15dd.mockapi.io/ithems?&limit=4&page=${curentPage}&${category}&sortBy=${sortBy}${searchBy}`,
-      );
-      setIthems(responce.data);
-    } catch (err) {
-      console.log(err);
-      alert(err.message);
-    } finally {
-      setIsLoading(false);
-    }
+    //асинхронний екшен
+    dispatch(fetchPizzas({ category, sortBy, searchBy, curentPage }));
   };
 
   React.useEffect(() => {
@@ -122,7 +85,12 @@ function Home() {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{isLoading ? sceletons : pizzas}</div>
+      {status === 'error' ? (
+        <h2>Pizzas not found 😕</h2>
+      ) : (
+        <div className="content__items">{status === 'loading' ? sceletons : pizzas}</div>
+      )}
+
       <Pagination curentPage={curentPage} onChangePage={onChangePage} />
     </>
   );
