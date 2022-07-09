@@ -1,12 +1,13 @@
 import React from 'react';
 import debounce from 'lodash.debounce'; //выдложены запроси
+import { useDispatch } from 'react-redux';
 
 import styles from './Search.module.scss';
 
-import { SearchContext } from '../../App';
+import { setSearchValue } from '../../redux/slices/filterSlice';
 
 function Search() {
-  const { setSearchValue } = React.useContext(SearchContext);
+  const dispatch = useDispatch();
   const [searchValueLocal, setSearchValueLocal] = React.useState(''); //локальний інпут
 
   const inputRef = React.useRef();
@@ -17,7 +18,7 @@ function Search() {
   };
 
   const searchDebounce = React.useCallback(
-    debounce((str) => setSearchValue(str), 1000),
+    debounce((str) => dispatch(setSearchValue(str)), 1000),
     [],
   );
 

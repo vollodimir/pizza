@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
 
-import { SearchContext } from '../App';
 import { setCategoryId, setCurentPage, setFilter } from '../redux/slices/filterSlice';
 import { fetchPizzas } from '../redux/slices/pizzaSlice';
 
@@ -14,8 +13,8 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 
 function Home() {
-  const { searchValue } = React.useContext(SearchContext);
   const navigation = useNavigate();
+  const dispatch = useDispatch();
 
   const isRequest = React.useRef(false);
   const isMounted = React.useRef(false); //без змін у редаксі щоб не добавлялась ссилка у браузері
@@ -28,10 +27,9 @@ function Home() {
   const activeCategorie = useSelector((state) => state.filterSlice.categoryId);
   const sortList = useSelector((state) => state.filterSlice.sort);
 
-  const dispatch = useDispatch();
   const onCangeCategorie = (id) => dispatch(setCategoryId(id));
 
-  const curentPage = useSelector((state) => state.filterSlice.curentPage);
+  const { curentPage, searchValue } = useSelector((state) => state.filterSlice);
   const onChangePage = (page) => dispatch(setCurentPage(page));
 
   const fetchRequest = async () => {
