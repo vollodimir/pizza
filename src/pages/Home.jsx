@@ -37,7 +37,7 @@ function Home() {
   const curentPage = useSelector((state) => state.filterSlice.curentPage);
   const onChangePage = (page) => dispatch(setCurentPage(page));
 
-  const fetchRequest = () => {
+  const fetchRequest = async () => {
     const category = activeCategorie > 0 ? `category=${activeCategorie}` : '';
     const sortBy = sortList.sortValue;
     const searchBy = searchValue && `&search=${searchValue}`;
@@ -52,14 +52,32 @@ function Home() {
     //     setIthems(json);
     //     setIsLoading(false);
     //   });
-    axios
-      .get(
+
+    // axios
+    //   .get(
+    //     `https://62a070c8a9866630f80f15dd.mockapi.io/ithems?&limit=4&page=${curentPage}&${category}&sortBy=${sortBy}${searchBy}`,
+    //   )
+    //   .then((reaponse) => {
+    //     setIthems(reaponse.data);
+    //     setIsLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     setIsLoading(false);
+    //   });
+
+    //синхронний запрос
+    try {
+      const responce = await axios.get(
         `https://62a070c8a9866630f80f15dd.mockapi.io/ithems?&limit=4&page=${curentPage}&${category}&sortBy=${sortBy}${searchBy}`,
-      )
-      .then((reaponse) => {
-        setIthems(reaponse.data);
-        setIsLoading(false);
-      });
+      );
+      setIthems(responce.data);
+    } catch (err) {
+      console.log(err);
+      alert(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   React.useEffect(() => {
