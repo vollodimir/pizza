@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import qs from 'qs';
 
 import { setCategoryId, setCurentPage, setFilter } from '../redux/slices/filterSlice';
@@ -22,7 +22,11 @@ function Home() {
   const { ithems, status } = useSelector((state) => state.pizzaSlice);
 
   const sceletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
-  const pizzas = ithems.map((elem) => <PizzaBlock key={elem.id + elem.name} {...elem} />);
+  const pizzas = ithems.map((elem) => (
+    <Link key={elem.id + elem.name} to={'pizza/' + elem.id}>
+      <PizzaBlock {...elem} />
+    </Link>
+  ));
 
   const activeCategorie = useSelector((state) => state.filterSlice.categoryId);
   const sortList = useSelector((state) => state.filterSlice.sort);
