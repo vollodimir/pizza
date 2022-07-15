@@ -5,11 +5,20 @@ import { addIthems, selectCartById } from '../../redux/slices/cartSlice';
 
 const typeNames = ['тонкое', 'традиционное'];
 
-function PizzaBlock({ id, imageUrl, name, types, sizes, price }) {
+type PizzaBlockProp = {
+  id: string;
+  imageUrl: string;
+  name: string;
+  types: number[];
+  sizes: number[];
+  price: number;
+};
+
+const PizzaBlock: React.FC<PizzaBlockProp> = ({ id, imageUrl, name, types, sizes, price }) => {
   const dispatch = useDispatch();
   const cartIthem = useSelector(selectCartById(id));
-  const [activeType, setActiveType] = React.useState(types[0]);
-  const [activeSize, setActiveSize] = React.useState(sizes[0]);
+  const [activeType, setActiveType] = React.useState<number>(types[0]);
+  const [activeSize, setActiveSize] = React.useState<number>(sizes[0]);
 
   const addedCount = cartIthem ? cartIthem.count : 0;
 
@@ -72,6 +81,6 @@ function PizzaBlock({ id, imageUrl, name, types, sizes, price }) {
       </div>
     </div>
   );
-}
+};
 
 export default PizzaBlock;

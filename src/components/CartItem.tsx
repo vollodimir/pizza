@@ -3,7 +3,17 @@ import { useDispatch } from 'react-redux';
 
 import { removeIthems, addIthems, minusIthems } from '../redux/slices/cartSlice';
 
-function CartItem({ id, imageUrl, name, price, type, size, count }) {
+type CartItemProps = {
+  id: string;
+  imageUrl: string;
+  name: string;
+  price: number;
+  type: string;
+  size: number;
+  count: number;
+};
+
+const CartItem: React.FC<CartItemProps> = ({ id, imageUrl, name, price, type, size, count }) => {
   const dispatch = useDispatch();
 
   const removeElement = () => {
@@ -95,6 +105,6 @@ function CartItem({ id, imageUrl, name, price, type, size, count }) {
       </div>
     </div>
   );
-}
+};
 
 export default CartItem;

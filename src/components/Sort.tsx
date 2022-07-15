@@ -1,29 +1,34 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setSortList } from '../redux/slices/filterSlice';
+import { setSortList, selectSort } from '../redux/slices/filterSlice';
 
-export const list = [
+type ListIthem = {
+  name: string;
+  sortValue: string;
+};
+
+export const list: ListIthem[] = [
   { name: 'популярности', sortValue: 'rating' },
   { name: 'цене', sortValue: 'price' },
   { name: 'алфавиту', sortValue: 'name' },
 ];
 
-function Sort() {
+const Sort: React.FC = () => {
   const dispatch = useDispatch();
-  const sortList = useSelector((state) => state.filterSlice.sort);
+  const sortList = useSelector(selectSort);
 
   const [open, setOpen] = React.useState(false);
 
-  const sortOutside = React.useRef();
+  const sortOutside = React.useRef<HTMLDivElement>(null);
 
-  const onClickSort = (obj) => {
+  const onClickSort = (obj: ListIthem) => {
     dispatch(setSortList(obj));
     setOpen(false);
   };
 
   React.useEffect(() => {
-    const closeSort = (event) => {
+    const closeSort = (event: any) => {
       if (!event.path.includes(sortOutside.current)) {
         setOpen(false);
       }
@@ -68,6 +73,6 @@ function Sort() {
       )}
     </div>
   );
-}
+};
 
 export default Sort;

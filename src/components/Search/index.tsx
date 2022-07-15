@@ -6,13 +6,13 @@ import styles from './Search.module.scss';
 
 import { setSearchValue } from '../../redux/slices/filterSlice';
 
-function Search() {
+const Search: React.FC = () => {
   const dispatch = useDispatch();
   const [searchValueLocal, setSearchValueLocal] = React.useState(''); //локальний інпут
 
-  const inputRef = React.useRef();
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const onChangeInput = (event) => {
+  const onChangeInput = (event: any) => {
     setSearchValueLocal(event.target.value);
     searchDebounce(event.target.value); ///
   };
@@ -23,7 +23,7 @@ function Search() {
   );
 
   const onClickClear = () => {
-    inputRef.current.focus();
+    inputRef.current?.focus(); // ?. оператор опціональної послідовності в ТС
     searchDebounce('');
     setSearchValueLocal('');
   };
@@ -39,6 +39,6 @@ function Search() {
       {searchValueLocal && <span onClick={onClickClear}>clear</span>}
     </div>
   );
-}
+};
 
 export default Search;

@@ -3,7 +3,7 @@ import ContentLoader from 'react-content-loader';
 
 ///https://skeletonreact.com/
 
-const Skeleton = (props) => (
+const Skeleton: React.FC = (props) => (
   <ContentLoader
     className="pizza-block"
     speed={2}

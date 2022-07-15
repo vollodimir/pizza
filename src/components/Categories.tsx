@@ -1,6 +1,11 @@
 import React from 'react';
 
-function Categories({ activeCategorie, onCangeCategorie }) {
+type CategoriesProps = {
+  activeCategorie: number;
+  onCangeCategorie: any;
+};
+
+const Categories: React.FC<CategoriesProps> = ({ activeCategorie, onCangeCategorie }) => {
   const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 
   return (
@@ -18,6 +23,6 @@ function Categories({ activeCategorie, onCangeCategorie }) {
       </ul>
     </div>
   );
-}
+};
 
 export default Categories;
