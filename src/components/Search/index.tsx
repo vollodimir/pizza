@@ -12,7 +12,7 @@ const Search: React.FC = () => {
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const onChangeInput = (event: any) => {
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValueLocal(event.target.value);
     searchDebounce(event.target.value); ///
   };
