@@ -8,6 +8,10 @@ type ListIthem = {
   sortValue: string;
 };
 
+type PopupClick = MouseEvent & {
+  path: Node[];
+};
+
 export const list: ListIthem[] = [
   { name: 'популярности', sortValue: 'rating' },
   { name: 'цене', sortValue: 'price' },
@@ -28,8 +32,9 @@ const Sort: React.FC = () => {
   };
 
   React.useEffect(() => {
-    const closeSort = (event: any) => {
-      if (!event.path.includes(sortOutside.current)) {
+    const closeSort = (event: MouseEvent) => {
+      const _event = event as PopupClick;
+      if (sortOutside.current && !_event.path.includes(sortOutside.current)) {
         setOpen(false);
       }
     };
